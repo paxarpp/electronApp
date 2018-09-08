@@ -25,6 +25,8 @@ const Image = styled.img`
   width: 30px;
   height: 30px;
   border-radius: 50%;
+  margin-left: 10px;
+  margin-right: 15px;
 `;
 
 const Wrapper = styled.div`

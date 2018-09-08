@@ -16,6 +16,7 @@ const createWindow = async () => {
     width: 1024,
     height: 800,
     webPreferences: { webSecurity: false },
+    frame: false,
   });
 
   // and load the index.html of the app.
