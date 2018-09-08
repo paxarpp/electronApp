@@ -43,7 +43,6 @@ class App extends Component {
   render() {
     const { posts, subreddit, headerNews } = this.state;
     console.log(posts);
-    console.log(subreddit);
 
     return (
       <div>

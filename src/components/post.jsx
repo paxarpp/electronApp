@@ -5,11 +5,11 @@ import PropTypes from 'prop-types';
 const Post = ({ post }) => (
   <Wrapper>
     {
-      post.data.preview
+      /http/g.test(post.data.thumbnail)
         && (
         <Image
-          alt="img post"
-          src={post.data.preview.images[0].source.url}
+          alt="img thumbnail"
+          src={post.data.thumbnail}
         />
         )
     }

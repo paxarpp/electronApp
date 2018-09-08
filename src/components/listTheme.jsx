@@ -1,5 +1,5 @@
 import React from 'react';
-import styled, { css } from 'styled-components';
+import styled, { css, keyframes } from 'styled-components';
 import PropTypes from 'prop-types';
 
 const ListTheme = ({ subreddit, headerNews, handler }) => (
@@ -28,9 +28,25 @@ ListTheme.propTypes = {
   handler: PropTypes.func.isRequired,
 };
 
+const pulse = keyframes`
+  0% {
+    background-color: #d4d4d4;
+    border: 1px solid #d4d4d4;
+  }
+  50% {
+    background-color: transparent;
+    border: 1px solid transparent;
+  }
+  100% {
+    background-color: #d4d4d4;
+    border: 1px solid #d4d4d4;
+  }
+`;
+
 const isActive = ({ active }) => active && css`
   background-color: #d4d4d4;
   border: 1px solid #d4d4d4;
+  animation: ${pulse} 2s linear infinite;
 `;
 
 const hover = ({ active }) => !active && css`
