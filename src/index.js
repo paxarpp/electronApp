@@ -1,10 +1,11 @@
-import { app, BrowserWindow } from 'electron';
+import { app, BrowserWindow, ipcMain } from 'electron';
 import installExtension, { REACT_DEVELOPER_TOOLS } from 'electron-devtools-installer';
 import { enableLiveReload } from 'electron-compile';
 
 // Keep a global reference of the window object, if you don't, the window will
 // be closed automatically when the JavaScript object is garbage collected.
 let mainWindow;
+let imageWindow;
 
 const isDevMode = process.execPath.match(/[\\/]electron/);
 
@@ -16,11 +17,18 @@ const createWindow = async () => {
     width: 1024,
     height: 800,
     webPreferences: { webSecurity: false },
-    frame: false,
+    frame: isDevMode,
+  });
+  imageWindow = new BrowserWindow({
+    width: 600,
+    height: 600,
+    parent: mainWindow,
+    show: false,
   });
 
   // and load the index.html of the app.
   mainWindow.loadURL(`file://${__dirname}/index.html`);
+  imageWindow.loadURL(`file://${__dirname}/view.html`);
 
   // Open the DevTools.
   if (isDevMode) {
@@ -28,12 +36,13 @@ const createWindow = async () => {
     mainWindow.webContents.openDevTools();
   }
 
-  // Emitted when the window is closed.
   mainWindow.on('closed', () => {
-    // Dereference the window object, usually you would store windows
-    // in an array if your app supports multi windows, this is the time
-    // when you should delete the corresponding element.
     mainWindow = null;
+  });
+
+  imageWindow.on('close', (e) => {
+    e.preventDefault();
+    imageWindow.hide();
   });
 };
 
@@ -59,5 +68,7 @@ app.on('activate', () => {
   }
 });
 
-// In this file you can include the rest of your app's specific main process
-// code. You can also put them in separate files and import them here.
+ipcMain.on('toggle-image', (event, arg) => {
+  imageWindow.show();
+  imageWindow.webContents.send('image', arg);
+});

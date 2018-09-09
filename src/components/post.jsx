@@ -2,8 +2,8 @@ import React from 'react';
 import styled from 'styled-components';
 import PropTypes from 'prop-types';
 
-const Post = ({ post }) => (
-  <Wrapper>
+const Post = ({ post, onClick }) => (
+  <Wrapper onClick={post.data.preview ? () => onClick(post.data.preview.images[0].source.url) : null}>
     {
       /http/g.test(post.data.thumbnail)
         && (
@@ -18,7 +18,7 @@ const Post = ({ post }) => (
 );
 Post.propTypes = {
   post: PropTypes.shape().isRequired,
-
+  onClick: PropTypes.func,
 };
 
 const Image = styled.img`
