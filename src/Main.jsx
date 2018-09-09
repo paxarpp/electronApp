@@ -9,6 +9,9 @@ const electron = window.require('electron');
 
 const { ipcRenderer } = electron;
 
+const { Menu } = electron.remote;
+
+
 class Main extends Component {
   constructor(props) {
     super(props);
@@ -21,10 +24,15 @@ class Main extends Component {
       },
     };
     this.baseURL = 'https://old.reddit.com/';
+
     this.choiseHead = this.choiseHead.bind(this);
+    this.showImage = this.showImage.bind(this);
+    this.initMenu = this.initMenu.bind(this);
   }
 
   componentDidMount() {
+    this.initMenu();
+
     const listsTitleNews = 'subreddits.json';
     axios.get(`${this.baseURL}${listsTitleNews}`)
       .then(response => this.setState({ subreddit: response.data.data.children }))
@@ -46,6 +54,38 @@ class Main extends Component {
 
   showImage(image) {
     ipcRenderer.send('toggle-image', image);
+  }
+
+  initMenu() {
+    const menu = Menu.buildFromTemplate([
+      {
+        label: 'File',
+        submenu: [
+          { label: 'New Window' },
+          {
+            label: 'Settings',
+            accelerator: 'CmdOrCtrl+,',
+            click: () => {
+              ipcRenderer.send('toggle-settings');
+            },
+          },
+          { type: 'separator' },
+          {
+            label: 'Quit',
+            accelerator: 'CmdOrCtrl+Q',
+          },
+        ],
+      },
+      {
+        label: 'Edit',
+        submenu: [
+          { label: 'Menu Item 1' },
+          { label: 'Menu Item 2' },
+          { label: 'Menu Item 3' },
+        ],
+      },
+    ]);
+    Menu.setApplicationMenu(menu);
   }
 
   render() {
