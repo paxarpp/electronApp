@@ -3,7 +3,9 @@ import styled from 'styled-components';
 import PropTypes from 'prop-types';
 
 const Post = ({ post, onClick }) => (
-  <Wrapper onClick={post.data.preview ? () => onClick(post.data.preview.images[0].source.url) : null}>
+  <Wrapper onClick={post.data.preview
+    ? () => onClick(post.data.preview.images[0].source.url) : null}
+  >
     {
       /http/g.test(post.data.thumbnail)
         && (
@@ -18,7 +20,7 @@ const Post = ({ post, onClick }) => (
 );
 Post.propTypes = {
   post: PropTypes.shape().isRequired,
-  onClick: PropTypes.func,
+  onClick: PropTypes.func.isRequired,
 };
 
 const Image = styled.img`
